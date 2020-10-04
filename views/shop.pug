@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title Shop
+        link(rel="stylesheet", href="/css/main.css")
+    body
+        header.main-header
+            nav.main-neader__nav
+                ul.main-header__item-list
+                    li.main-header__item
+                         a(href="/") Shop
+                    li.main-header__item
+                        a(href="/admin/add-product") Add Product
+        main
+            .grid
+                each product in prods
+                    article.card.product-item
+                        header.card__header
+                            h1.product__title Great Book
+                        .card__image
+                            img(src="https://assets.entrepreneur.com/content/3x2/2000/20191219170611-GettyImages-1152794789.jpeg?width=700&crop=2:1", alt="Book")
+                        .card__content  
+                            h2.product__price $19.99
+                            p.product__description A very interesting book
+                        .card__actions  
+                            button.btn Add to Cart
+            
