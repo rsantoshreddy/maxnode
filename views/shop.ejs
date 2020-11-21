@@ -1,21 +1,14 @@
-<%- include('include/head.ejs') %>
+<%- include('includes/head.ejs') %>
   </head>
   <body>
-    <header class="main-header">
-      <nav class="main-neader__nav">
-        <ul class="main-header__item-list">
-          <li class="main-header__item"><a href="/">Shop</a></li>
-          <li class="main-header__item">
-            <a href="/admin/add-product">Add Product</a>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <%- include('includes/header.ejs') %>
     <main>
+      <% if(prods.length) {%>
       <h1>My Products</h1>
+      <% for(var product in prods) { %>
       <article class="card product-item">
         <header class="card__header">
-          <h1 class="product__title">Title</h1>
+          <h1 class="product__title"><% product.title %></h1>
         </header>
         <div class="card__image">
           <img
@@ -31,6 +24,10 @@
           </div>
         </div>
       </article>
+      <% } %>
+      <% }else {%>
+      <h1>No Products</h1>
+      <% }%>
     </main>
   </body>
 </html>
