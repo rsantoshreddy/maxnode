@@ -1,9 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const expressHandleBars = require('express-handlebars');
+// const expressHandleBars = require('express-handlebars');
 
-const adminData = require('./routes/admin');
+const productRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
 
 const app = express();
@@ -27,7 +27,7 @@ app.set('views', 'views');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin', adminData.productRouter);
+app.use('/admin', productRouter);
 app.use(shopRouter);
 
 app.use((req, res, next) => {

@@ -5,10 +5,10 @@
     <main>
       <% if(prods.length) {%>
       <h1>My Products</h1>
-      <% for(var product in prods) { %>
+      <% for(var key in prods) { %>
       <article class="card product-item">
         <header class="card__header">
-          <h1 class="product__title"><% product.title %></h1>
+          <h1 class="product__title"><%=prods[key].title %></h1>
         </header>
         <div class="card__image">
           <img
