@@ -38,3 +38,28 @@ main {
 .main-header__item a.active {
   color: blueviolet;
 }
+
+.centered{
+  text-align: center;
+}
+
+img{
+  max-width: 200px;
+}
+
+button, a.btn {
+  border: 1px solid orange;
+  background: royalblue;
+  color: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 18px;
+  text-decoration: none;
+}
+button:active,
+button:hover, a.btn:hover, a.btn:active {
+  color: rgb(34, 21, 211);
+  background: #fff;
+}

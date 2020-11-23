@@ -18,14 +18,4 @@
   border: 1px solid orange;
   border-radius: 2px;
 }
-button {
-  border: 1px solid orange;
-  background: royalblue;
-  color: #fff;
-  border-radius: 2px;
-}
-button:active,
-button:hover {
-  color: rgb(34, 21, 211);
-  background: #fff;
-}
+
