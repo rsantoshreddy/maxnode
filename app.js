@@ -5,7 +5,6 @@ const path = require('path');
 
 const productRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
-
 const app = express();
 
 // =========ejs Configurations==========
