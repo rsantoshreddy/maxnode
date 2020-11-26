@@ -2,5 +2,23 @@
   </head>
   <body>
     <%- include('../includes/header.ejs') %>
+    <% if(orders.length){%>
+      <ul>
+        <% orders.forEach(order=>{%>
+          <li>
+            <h1># <%=order.id%></h1>
+            <ul>
+              <% order.products.forEach(product=>{%>
+                <li>
+                  <%=product.title%>(<%=product.orderItem.quantity%>)
+                </li>
+                  <%})%>
+            </ul>
+          </li>
+        <%})%>
+        </ul>
+    <% }else{%>
+      <p>No orders</p>
+      <% }%>
 </body>
 </html>
