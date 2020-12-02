@@ -1,9 +1,10 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 // const Cart = require('../models/cart');
 
 // '/' GET
 exports.getIndex = (req, res, next) => {
-  Product.fetchAll().then((products) => {
+  Product.find().then((products) => {
     res.render('shop/index', {
       prods: products,
       title: 'Shop',
@@ -14,7 +15,7 @@ exports.getIndex = (req, res, next) => {
 
 // '/products' GET
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
+  Product.find()
     .then((products) => {
       res.render('shop/products-list', {
         prods: products,
@@ -45,19 +46,31 @@ exports.getProductDetails = (req, res, next) => {
 
 // '/orders' GET
 exports.getOrders = (req, res, next) => {
-  req.user.getOrders().then((orders) => {
-    res.render('shop/orders', {
-      title: 'Your orders',
-      path: '/orders',
-      orders,
+  Order.find()
+    .populate('userId')
+    .populate('items.productId')
+    .then((orders) => {
+      console.log(orders[0].items);
+      res.render('shop/orders', {
+        title: 'Your orders',
+        path: '/orders',
+        orders,
+      });
     });
-  });
 };
 
 // '/orders' Post
 exports.postOrders = (req, res, next) => {
-  req.user
-    .addOrder()
+  const order = new Order({
+    items: req.user.cart.items,
+    userId: req.user._id,
+  });
+  order
+    .save()
+    .then(() => {
+      req.user.cart = { items: [] };
+      return req.user.save();
+    })
     .then(() => {
       res.redirect('/orders');
     })
@@ -76,13 +89,17 @@ exports.deleteCartItem = (req, res, next) => {
 
 // '/cart' GET
 exports.getCart = (req, res, next) => {
-  req.user.getCart().then((products) => {
-    res.render('shop/cart', {
-      title: 'Products',
-      path: '/products',
-      products,
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then((user) => {
+      const products = user.cart.items;
+      res.render('shop/cart', {
+        title: 'Products',
+        path: '/products',
+        products,
+      });
     });
-  });
 };
 
 // '/cart' Post
