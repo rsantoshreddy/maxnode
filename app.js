@@ -5,6 +5,9 @@ const path = require('path');
 const mangoose = require('mongoose');
 const session = require('express-session');
 const MongoDBSessionStore = require('connect-mongodb-session')(session);
+const csurf = require('csurf');
+const flash = require('connect-flash');
+
 // =========import routes==========
 const productRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
@@ -36,24 +39,14 @@ app.use(
     store: sessionStore,
   })
 );
+app.use(csurf());
+app.use(flash());
 
 app.use((req, res, next) => {
   if (req.session.user) {
     User.findById(req.session.user._id)
       .then((user) => {
         req.user = user;
-        // if (!user) {
-        //   const newUser = new User({
-        //     name: 'Santosh',
-        //     email: 'rsantoshreddy09@gmail.con',
-        //   });
-        //   newUser.save().then((user) => {
-        //     console.log(user);
-        //     req.user = user;
-        //   });
-        // } else {
-        //   req.user = user;
-        // }
         next();
       })
       .catch((err) => {
@@ -63,6 +56,14 @@ app.use((req, res, next) => {
     next();
   }
 });
+
+// setting locals
+app.use((req, res, next) => {
+  res.locals.isLoggedIn = req.session.isLoggedIn;
+  res.locals.csurfToken = req.csrfToken();
+  next();
+});
+
 app.use('/admin', productRouter);
 app.use(shopRouter);
 app.use(authRouter);

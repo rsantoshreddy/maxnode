@@ -8,7 +8,6 @@ exports.getAddProducts = (req, res, next) => {
     title: 'Add Product',
     path: '/admin/add-product',
     editMode: false,
-    isLoggedIn: req.session.isLoggedIn,
   });
 };
 
@@ -29,7 +28,6 @@ exports.getEditProduct = (req, res, next) => {
       path: '/admin/update-product',
       editMode: true,
       product: product,
-      isLoggedIn: req.session.isLoggedIn,
     });
   });
 };
@@ -63,7 +61,6 @@ exports.getProducts = (req, res, next) => {
       prods: products,
       title: 'Products',
       path: '/products',
-      isLoggedIn: req.session.isLoggedIn,
     });
   });
 };

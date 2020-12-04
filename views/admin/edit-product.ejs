@@ -24,6 +24,7 @@
         <% if(editMode){%>
             <input type="hidden" value="<%=product._id%>" name='productId'>
         <% }%>
+        <input type="hidden" value='<%=csurfToken%>' name='_csrf'/>
         <button type="submit"><% if(editMode) {%>Update Product<%}else{%>Add Product<%}%></button>
       </form>
     </main>

@@ -6,10 +6,8 @@ const orderSchema = Schema({
   },
   items: [
     {
-      productId: {
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-        required: true,
+      product: {
+        type: Object,
       },
       quantity: { type: Number, required: true },
     },

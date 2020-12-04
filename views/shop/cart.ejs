@@ -16,6 +16,7 @@
             <% }%>
         </ul>
         <form action="/orders" method="POST">
+          <input type="hidden" value='<%=csurfToken%>' name='_csrf'/>
           <button type="submit">Order</button>
         </form> 
         
