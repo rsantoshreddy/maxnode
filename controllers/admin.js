@@ -2,8 +2,6 @@ const Product = require('../models/product');
 const user = require('../models/user');
 
 exports.getAddProducts = (req, res, next) => {
-  console.log(req.session.isLoggedIn);
-
   res.render('admin/edit-product', {
     title: 'Add Product',
     path: '/admin/add-product',
@@ -56,7 +54,7 @@ exports.deleteProduct = (req, res, next) => {
 
 // '/products' GET
 exports.getProducts = (req, res, next) => {
-  Product.find().then((products) => {
+  Product.find({ userId: req.user._id }).then((products) => {
     res.render('admin/products', {
       prods: products,
       title: 'Products',

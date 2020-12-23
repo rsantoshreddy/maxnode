@@ -66,3 +66,6 @@ a.btn:active {
   color: rgb(34, 21, 211);
   background: #fff;
 }
+.mt-1 {
+  margin-top: 10px;
+}

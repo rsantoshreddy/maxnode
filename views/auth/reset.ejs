@@ -7,21 +7,14 @@
       <% if(errorMessage){%>
         <div><%=errorMessage%></div>
       <% }%>
-      <form class="login-form" action="/login" method="POST">
+      <form class="reset-form" action="/reset" method="POST">
         <div class="form-control">
           <label for="email">Email</label>
           <input type="email" name="email" id="email"  />
         </div>
-        <div class="form-control">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" />
-        </div>
         <input type="hidden" value='<%=csurfToken%>' name='_csrf'/>
-        <button type="submit">Login</button>
+        <button type="submit">Reset</button>
       </form>
-      <div class="mt-1">
-        <a href='/reset'>Reset Password</a>
-      </div>
     </main>
   </body>
 </html>
