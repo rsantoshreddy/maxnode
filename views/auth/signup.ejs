@@ -4,22 +4,25 @@
   <body>
     <%- include('../includes/header.ejs') %>
     <main>
-      <form class="product-form" action="/signup" method="POST">
+       <% if(errorMessage){%>
+        <div><%=errorMessage%></div>
+      <% }%>
+      <form class="product-form" action="/signup" method="POST" novalidate>
         <div class="form-control">
           <label for="name">Name</label>
-          <input type="text" name="name" id="name" />
+          <input type="text" name="name" id="name" value="<%=odlInput.name%>"/>
         </div>
         <div class="form-control">
           <label for="email">Email</label>
-          <input type="email" name="email" id="email" />
+          <input type="email" name="email" id="email" value="<%=odlInput.email%>"/>
         </div>
           <div class="form-control">
           <label for="password">Password</label>
-          <input type="password" name="password" id="password" />
+          <input type="password" name="password" id="password" value="<%=odlInput.password%>"/>
         </div>
          <div class="form-control">
           <label for="confirmPassword">Confirm Password</label>
-          <input type="password" name="confirmPassword" id="confirmPassword" />
+          <input type="password" name="confirmPassword" id="confirmPassword" value="<%=odlInput.confirmPassword%>"/>
         </div>
         <input type="hidden" value='<%=csurfToken%>' name='_csrf'/>
         <button type="submit">signup</button>
