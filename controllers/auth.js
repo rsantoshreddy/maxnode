@@ -16,7 +16,7 @@ exports.getSignup = (req, res, next) => {
   res.render('auth/signup', {
     title: 'Signup',
     path: '/auth/signup',
-    errorMessage: messages,
+    errorMessage: message,
     odlInput: {
       name: '',
       email: '',
@@ -68,16 +68,15 @@ exports.postSignup = (req, res, next) => {
               console.log(res);
             })
             .catch((err) => {
-              console.log(err);
-              console.log(err.response.body);
+              next(err);
             });
         })
         .catch((err) => {
-          console.log(err);
+          next(err);
         });
     })
     .catch((err) => {
-      console.log(err);
+      next(err);
     });
 };
 

@@ -11,10 +11,16 @@ exports.getAddProducts = (req, res, next) => {
 
 // /product POST
 exports.addProduct = (req, res, next) => {
+  // const {} = req.body;
   const product = new Product({ ...req.body, userId: req.user._id });
-  product.save().then(() => {
-    res.redirect('/admin/admin-product');
-  });
+  product
+    .save()
+    .then(() => {
+      res.redirect('/admin/admin-product');
+    })
+    .catch((error) => {
+      next(error);
+    });
 };
 
 // update product

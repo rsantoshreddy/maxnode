@@ -72,6 +72,11 @@ app.use((req, res, next) => {
   res.status(404).render('404', { title: 'Page not found' });
 });
 
+app.use((error, req, res, next) => {
+  // res.redirect('/500');// Dont do this, this may lead to infinite loop
+  res.status(500).render('500', { title: 'Internal server error' });
+});
+
 mangoose
   .connect(mongoDbUrl, { useNewUrlParser: true })
   .then(() => {
