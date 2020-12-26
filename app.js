@@ -1,6 +1,7 @@
 // =========import libs==========
 const express = require('express');
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const path = require('path');
 const mangoose = require('mongoose');
 const session = require('express-session');
@@ -30,7 +31,34 @@ app.set('view engine', 'ejs');
 app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// app.use(multer({ dest: 'images' }).single('image'));
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'images');
+  },
+  filename: (req, file, cb) => {
+    const name = `${new Date().getTime()}_${file.originalname}`;
+    cb(null, name);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
+  ) {
+    cb(null, true);
+  }
+  cb(null, false);
+};
+
+app.use(multer({ storage: fileStorage, fileFilter }).single('image'));
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 app.use(
   session({
     secret: 'my secret',
@@ -74,7 +102,10 @@ app.use((req, res, next) => {
 
 app.use((error, req, res, next) => {
   // res.redirect('/500');// Dont do this, this may lead to infinite loop
-  res.status(500).render('500', { title: 'Internal server error' });
+  console.log(error);
+  res
+    .status(500)
+    .render('500', { title: 'Internal server error', error, isLoggedIn: true });
 });
 
 mangoose

@@ -1,3 +1,7 @@
+const fs = require('fs');
+const path = require('path');
+const PDFDocument = require('pdfkit');
+const { deleteFile } = require('../utils/file');
 const Product = require('../models/product');
 const Order = require('../models/order');
 
@@ -126,4 +130,86 @@ exports.postCart = (req, res, next) => {
         console.log(err);
       });
   });
+};
+
+exports.getInvoice = (req, res, next) => {
+  const { orderId } = req.params;
+  Order.findById(orderId)
+    .then((order) => {
+      if (!order) {
+        return next(new Error('No Order found'));
+      }
+
+      if (order.userId.toString() !== req.user._id.toString()) {
+        return next(new Error('Unauthorised access!'));
+      }
+
+      const invoiceName = `invoice-${orderId}.pdf`;
+      const invoice = path.join('data', 'invoices', invoiceName);
+
+      // fs.readFile(invoice, (err, data) => {
+      //   if (err) {
+      //     return next(err);
+      //   }
+      //   res.setHeader('Content-Type', 'application/pdf');
+      //   // res.setHeader('Content-Disposition', `attachment; filename=${invoiceName}`);
+      //   // res.setHeader('Content-Disposition', `inline; filename=${invoiceName}`);
+      //   return res.send(data);
+      // });
+      /* 
+        ================================================ 
+          THE ABOVE CODE WILL WORK FINE. 
+          BUT FOR LARGE FILES AND HEAVY NETWORK LOAD CASE, IT WILL OVER KILL SERVER MEMORY. 
+          THE SOLUTION IS STREAM THE FILE.
+        =================================================
+      */
+      // const invoiceStream = fs.createReadStream(invoice);
+      // res.setHeader('Content-Type', 'application/pdf');
+      // res.setHeader(
+      //   'Content-Disposition',
+      //   `attachment; filename=${invoiceName}`
+      // );
+      // invoiceStream.pipe(res);
+
+      /*
+       ================================================ 
+        DYNAMIC PDF GENERATION AND STORAGE
+       ================================================
+        */
+
+      res.setHeader('Content-Type', 'application/pdf');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=${invoiceName}`
+      );
+      const pdfDocument = new PDFDocument();
+      pdfDocument.pipe(fs.createWriteStream(invoice));
+      pdfDocument.pipe(res);
+      pdfDocument.fontSize(26).text('Invoice', { align: 'center' });
+      pdfDocument
+        .fontSize(10)
+        .text(
+          '============================================================================='
+        );
+      let total = 0;
+      order.items.forEach((item, index) => {
+        const { product, quantity } = item;
+        const { title, price } = product;
+        total += price * quantity;
+        pdfDocument
+          .fontSize(16)
+          .text(`${index + 1}.   ${title}    ${price} X ${quantity}`);
+      });
+      pdfDocument
+        .fontSize(10)
+        .text(
+          '============================================================================='
+        );
+      pdfDocument.fontSize(16).text(`Total      ${total}`);
+
+      pdfDocument.end();
+    })
+    .catch((err) => {
+      return next(err);
+    });
 };
