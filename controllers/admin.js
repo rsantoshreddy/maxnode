@@ -119,13 +119,15 @@ exports.postEditProduct = (req, res, next) => {
 };
 
 exports.deleteProduct = (req, res, next) => {
-  const { productId } = req.body;
+  const { productId } = req.params;
   Product.findByIdAndDelete(productId)
-    .then(() => {
-      res.redirect('/admin/admin-product');
+    .then((results) => {
+      // res.redirect('/admin/admin-product');
+      return res.status(200).json({ message: 'Product deleted successfully!' });
     })
     .catch((err) => {
-      console.log(err);
+      // console.log(err);
+      return res.status(500).json({ message: 'Product delete failed!' });
     });
 };
 

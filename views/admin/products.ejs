@@ -21,11 +21,12 @@
           </div>
           <div class="card__actions">
             <a href="/admin/edit-product/<%=product._id%>?edit=true" class="btn">Edit</a>
-            <form action="/admin/delete-product/" method="POST">
+            <!-- <form action="/admin/delete-product/" method="POST"> -->
                 <input type="hidden" name='productId' value='<%=product._id%>'>
                 <input type="hidden" value='<%=csurfToken%>' name='_csrf'/>
-                <button type="submit" class="btn">Delete</a>
-            </form>
+                <!-- <button type="submit" class="btn">Delete</button> -->
+                <button type="button" class="btn" onclick="deleteProduct(this)">Delete</button>
+            <!-- </form> -->
           </div>
         </div>
       </article>
@@ -34,5 +35,6 @@
       <h1>No Products</h1>
       <% }%>
     </main>
+    <script src="/js/product.js"></script>
   </body>
 </html>

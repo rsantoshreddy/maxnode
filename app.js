@@ -8,7 +8,9 @@ const session = require('express-session');
 const MongoDBSessionStore = require('connect-mongodb-session')(session);
 const csurf = require('csurf');
 const flash = require('connect-flash');
-
+const stripe = require('stripe')(
+  'sk_test_51I2jY5EAXXabvFAkb3uVHiEU1YBHUDB6OzDOXNJaQXb4JxYHuDwRrPgs0KkzxTHlWy9DGlYtv7lHzM5QOzIWixXx003hamWveS'
+);
 // =========import routes==========
 const productRouter = require('./routes/admin');
 const shopRouter = require('./routes/shop');
